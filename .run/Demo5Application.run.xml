@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Demo5Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <module name="demo5" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.demo.sentinel.demo.Demo5Application" />
+    <option name="VM_PARAMETERS" value="-javaagent:E:\Tech\Skywalking\skywalking-agent\skywalking-agent.jar -Dskywalking.agent.service_name=demo5 -Dskywalking.collector.backend_service=127.0.0.1:11800" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
