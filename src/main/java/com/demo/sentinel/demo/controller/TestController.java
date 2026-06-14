@@ -16,6 +16,6 @@ public class TestController {
         log.info(httpRequest.toString());
         log.info("--------------demo5 /test, traceId:{}", TraceContext.traceId());
 
-        return "demo5";
+        return "demo:" + TraceContext.traceId();
     }
 }
