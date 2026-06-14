@@ -20,6 +20,8 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Service
@@ -29,9 +31,12 @@ public class TestScheduler {
     private ActorMapper actorMapper;
 
     @Autowired
+    private AsyncService asyncService;
+
+    @Autowired
     private RestTemplate restTemplate;
 
-//    @Scheduled(fixedRate =4000)
+    @Scheduled(fixedRate =4000)
     public void test11() {
         log.info("this is the test task, time is:{}", LocalDateTime.now().toString());
         
@@ -42,6 +47,16 @@ public class TestScheduler {
 
         // 调用外部服务, restTemplate调用外部接口， 链路追踪不成功，需要改为使用httpclient组件才能成功。
         callExternalService();
+        asyncService.callAsync();
+        callAsync2();        
+    }
+
+    private void callAsync2() {
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        executorService.submit(() -> {
+            // 无效
+            log.info("this is in the Runnable function, traceId:{}", TraceContext.traceId());
+        });
     }
 
     private void callExternalService() {
@@ -75,5 +90,6 @@ public class TestScheduler {
         } catch (IOException | ParseException e) {
             log.error("HttpClient5 调用失败: {}, traceId:{}", e.getMessage(), TraceContext.traceId());
         }
+        asyncService.callAsync();
     }
 }
