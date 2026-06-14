@@ -10,6 +10,8 @@ import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.skywalking.apm.toolkit.trace.CallableWrapper;
+import org.apache.skywalking.apm.toolkit.trace.RunnableWrapper;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -53,10 +56,12 @@ public class TestScheduler {
 
     private void callAsync2() {
         ExecutorService executorService = Executors.newFixedThreadPool(5);
-        executorService.submit(() -> {
-            // 无效
-            log.info("this is in the Runnable function, traceId:{}", TraceContext.traceId());
-        });
+        executorService.submit(RunnableWrapper.of(new Runnable() {
+            @Override
+            public void run() {
+                log.info("this is in the Runnable function, traceId:{}", TraceContext.traceId());
+            }
+        }));
     }
 
     private void callExternalService() {
