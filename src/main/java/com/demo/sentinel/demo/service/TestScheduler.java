@@ -40,7 +40,7 @@ public class TestScheduler {
 //        actors.subList(0, 10).forEach(actor -> log.info("Actor: id={}, firstName={}, lastName={}",
 //                actor.getActorId(), actor.getFirstName(), actor.getLastName()));
 
-        // 调用外部服务, restTemplate调用外部接口不成功，需要改为使用httpclient组件才能成功。
+        // 调用外部服务, restTemplate调用外部接口， 链路追踪不成功，需要改为使用httpclient组件才能成功。
         callExternalService();
     }
 
